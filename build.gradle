@@ -15,7 +15,7 @@ apply plugin: 'de.inetsoftware.jwebassembly'
 
 group 'lol.hub'
 version '1.0-SNAPSHOT'
-archivesBaseName = 'HelloWorld'
+archivesBaseName = 'JWebAssembly-HelloWorld'
 
 java {
     toolchain {
