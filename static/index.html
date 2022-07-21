@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>wasm webui</title>
+    <link href="data:image/png;base64," rel="icon">
+    <meta charset="UTF-8">
+    <script src="@REPLACE@.wasm.js"></script>
+    <script>
+        WebAssembly.instantiateStreaming(fetch("@REPLACE@.wasm"), wasmImports)
+            .then(obj => obj.instance.exports.main())
+            .catch((err) => document.write(err));
+    </script>
+</head>
+</body>
+</html>
