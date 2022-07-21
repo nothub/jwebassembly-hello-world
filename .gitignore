@@ -3,9 +3,11 @@
 # but include directories
 !*/
 
-!/.editorconfig
 !/.gitattributes
 !/.gitignore
+
+!/.github/**
+!/.editorconfig
 
 !/gradle/wrapper/**
 !/build.gradle
