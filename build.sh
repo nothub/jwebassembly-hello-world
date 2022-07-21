@@ -8,11 +8,6 @@ log() {
 
 # ENTRYPOINT
 
-if ! command -v docker >/dev/null 2>&1; then
-    log "Error: Missing dependency: $1"
-    exit 1
-fi
-
 if [[ -z $SDKMAN_DIR ]]; then
     # shellcheck disable=SC2016
     log 'Error: $SDKMAN_DIR is not set'
