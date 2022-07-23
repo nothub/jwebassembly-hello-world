@@ -10,9 +10,13 @@ public class Main {
     @Export
     public static void main() {
         Document document = Window.document();
+
         HTMLElement div = document.createElement("div");
         Text text = document.createTextNode("Hello World, this text come from WebAssembly.");
-        div.appendChild( text );
-        document.body().appendChild( div );
+        div.appendChild(text);
+        document.body().appendChild(div);
+
+        HTMLElement canvas = document.createElement("canvas");
+        document.body().appendChild(canvas);
     }
 }
