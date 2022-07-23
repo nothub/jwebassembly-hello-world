@@ -1,51 +1,39 @@
 #!/usr/bin/env bash
 
-set -exuo pipefail
+set -o errexit
+set -o nounset
+set -o pipefail
 
-log() {
-    echo >&2 "$*"
-}
+dir_root="$(dirname "$(readlink -f -- "$0")")"
+dir_out="${dir_root}/out"
+dir_static="${dir_root}/static"
 
-# ENTRYPOINT
-
-if [[ -z $SDKMAN_DIR ]]; then
-    # shellcheck disable=SC2016
-    log 'Error: $SDKMAN_DIR is not set'
-    exit 1
-fi
-
-# use java 8
+# sdkman use java 8
 set +u
-source "${SDKMAN_DIR}/bin/sdkman-init.sh"
-sdk use java "$(find "${SDKMAN_DIR}/candidates/java/" -maxdepth 1 -type d -regex ".*\/java\/8.*" -exec basename {} \; | sort -n -r | head -n 1)"
+sdkman_dir="${SDKMAN_DIR:-"${HOME}/.sdkman"}"
+if [[ -n $sdkman_dir ]]; then
+    source "${sdkman_dir}/bin/sdkman-init.sh"
+    sdk use java "$(find "${sdkman_dir}/candidates/java/" -maxdepth 1 -type d -regex ".*\/java\/8.*" -exec basename {} \; | sort -n -r | head -n 1)"
+else
+    echo >&2 "sdkman not found, make sure to use java 8!"
+fi
 set -u
 
-# clean
-rm -rf out
-gradle clean
-
 # dir layout
-mkdir -p out
-mkdir -p static
+mkdir -p "${dir_out}" "${dir_static}"
+
+# clean
+rm -rf "${dir_out:?}"/*
+gradle clean
 
 # build
 gradle wasm
 
 # bundle
-cp build/distributions/* out
-cp static/* out
+cp build/distributions/* "${dir_out}"
+for asset in "${dir_static}"/*; do
+    cp "${asset}" "${dir_out}"
+done
 
 # replace token
-artifact_name="$(find "build/distributions/" -type f -regex ".*\.wasm\.js" -exec basename {} \; | sed 's/\.wasm\.js//')"
-sed -i "s/@REPLACE@/${artifact_name}/" "out/index.html"
-
-# serve
-log "Serving on http://localhost:8080"
-docker run \
-    --name "caddy-jwasm" \
-    --interactive \
-    --tty \
-    --rm \
-    --publish "8080:80" \
-    --volume "${PWD}/out/:/usr/share/caddy/":ro \
-    caddy:2-alpine
+sed -i "s/@ARTIFACT_NAME@/$(find "${dir_out}/" -type f -regex ".*\.wasm\.js" -exec basename {} \; | sed 's/\.wasm\.js//')/" "${dir_out}/index.html"

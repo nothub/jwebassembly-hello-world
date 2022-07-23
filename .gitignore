@@ -9,9 +9,11 @@
 !/.github/**
 !/.editorconfig
 
+!/build.sh
+!/serve.sh
+
 !/gradle/wrapper/**
 !/build.gradle
-!/build.sh
 !/gradlew
 !/gradlew.bat
 !/settings.gradle
