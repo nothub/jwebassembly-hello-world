@@ -3,7 +3,6 @@ package lol.hub;
 import de.inetsoftware.jwebassembly.api.annotation.Export;
 import de.inetsoftware.jwebassembly.web.dom.Document;
 import de.inetsoftware.jwebassembly.web.dom.HTMLElement;
-import de.inetsoftware.jwebassembly.web.dom.Text;
 import de.inetsoftware.jwebassembly.web.dom.Window;
 
 public class Main {
@@ -11,9 +10,12 @@ public class Main {
     public static void main() {
         Document document = Window.document();
 
+        /* HTMLElement title = document.createElement("title");
+        title.appendChild(document.createTextNode("JWebAssembly Example"));
+        document.appendChild(title); */
+
         HTMLElement div = document.createElement("div");
-        Text text = document.createTextNode("Hello World, this text come from WebAssembly.");
-        div.appendChild(text);
+        div.appendChild(document.createTextNode("Hello World, this text come from WebAssembly."));
         document.body().appendChild(div);
 
         HTMLElement canvas = document.createElement("canvas");
