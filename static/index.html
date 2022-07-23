@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="utf-8"/>
     <title>wasm webui</title>
-    <link href="data:image/png;base64," rel="icon">
-    <meta charset="UTF-8">
-    <script src="@REPLACE@.wasm.js"></script>
+    <link rel="icon" href="data:image/png;base64,">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes"/>
+    <script src="@ARTIFACT_NAME@.wasm.js"></script>
     <script>
-        WebAssembly.instantiateStreaming(fetch("@REPLACE@.wasm"), wasmImports)
+        WebAssembly.instantiateStreaming(fetch("@ARTIFACT_NAME@.wasm"), wasmImports)
             .then(obj => obj.instance.exports.main())
             .catch((err) => document.write(err));
     </script>
 </head>
-</body>
 </html>
