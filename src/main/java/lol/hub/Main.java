@@ -1,7 +1,10 @@
 package lol.hub;
 
 import de.inetsoftware.jwebassembly.api.annotation.Export;
-import de.inetsoftware.jwebassembly.web.dom.*;
+import de.inetsoftware.jwebassembly.web.dom.HTMLElement;
+import de.inetsoftware.jwebassembly.web.dom.Node;
+import de.inetsoftware.jwebassembly.web.dom.NodeList;
+import de.inetsoftware.jwebassembly.web.dom.Window;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,30 +12,23 @@ import java.util.List;
 public class Main {
     @Export
     public static void main() {
-        Document document = Window.document();
-
-        StringBuilder n = new StringBuilder();
+        HTMLElement document = Window.document().documentElement();
 
         for (Node node : nodeList(document.childNodes())) {
-            n.append(node.nodeType()).append("\n");
+            HTMLElement div1 = Window.document().createElement("div");
+            div1.appendChild(Window.document().createTextNode(String.valueOf(node.nodeType())));
+            Window.document().body().appendChild(div1);
+            Window.document().body().appendChild(Window.document().createElement("br"));
             for (Node child : nodeList(node.childNodes())) {
-                n.append("  - ").append(child.nodeType()).append("\n");
+                HTMLElement div2 = Window.document().createElement("div");
+                div2.appendChild(Window.document().createTextNode(">" + child.nodeType()));
+                Window.document().body().appendChild(div2);
+                Window.document().body().appendChild(Window.document().createElement("br"));
             }
         }
 
-        // de.inetsoftware.jwebassembly.web.dom.Document
-        // does not allow access to the head element,
-        // means this is not possible without workarounds?
-        /* HTMLElement title = document.createElement("title");
-        title.appendChild(document.createTextNode("JWebAssembly Example"));
-        document.head().appendChild(title); */
-
-        HTMLElement div = document.createElement("div");
-        div.appendChild(document.createTextNode("Hello World, this text come from WebAssembly. " + n));
-        document.body().appendChild(div);
-
-        HTMLElement canvas = document.createElement("canvas");
-        document.body().appendChild(canvas);
+        HTMLElement canvas = Window.document().createElement("canvas");
+        Window.document().body().appendChild(canvas);
     }
 
     public static List<Node> nodeList(NodeList nodeList) {
