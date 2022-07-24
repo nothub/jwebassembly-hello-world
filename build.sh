@@ -30,8 +30,10 @@ gradle clean
 gradle wasm
 
 # bundle
-cp build/distributions/*.wasm "${dir_out}/app.wasm"
-cp build/distributions/*.js "${dir_out}/imports.js"
+cp build/distributions/* "${dir_out}"
 for asset in "${dir_static}"/*; do
     cp "${asset}" "${dir_out}"
 done
+
+# replace token
+sed -i "s/@ARTIFACT_NAME@/$(find "${dir_out}/" -type f -regex ".*\.wasm\.js" -exec basename {} \; | sed 's/\.wasm\.js//')/" "${dir_out}/index.html"

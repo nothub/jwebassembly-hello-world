@@ -5,9 +5,9 @@
     <title>wasm webui</title>
     <link rel="icon" href="data:image/png;base64,">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes"/>
-    <script src="imports.js"></script>
+    <script src="@ARTIFACT_NAME@.wasm.js"></script>
     <script>
-        WebAssembly.instantiateStreaming(fetch("app.wasm"), wasmImports)
+        WebAssembly.instantiateStreaming(fetch("@ARTIFACT_NAME@.wasm"), wasmImports)
             .then(obj => obj.instance.exports.main())
             .catch((err) => console.log(err));
     </script>
