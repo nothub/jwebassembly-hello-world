@@ -30,7 +30,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.i-net-software:jwebassembly-api:master-SNAPSHOT'
+    implementation 'com.github.i-net-software:jwebassembly-api:v0.4'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
 }
